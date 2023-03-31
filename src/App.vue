@@ -1,9 +1,18 @@
 <template>
   <v-app>
     <v-app-bar>
+      <v-tooltip text="Toggle TOC" location="bottom">
+        <template v-slot:activator="{ props }">
+          <v-app-bar-nav-icon
+            v-bind="props"
+            @click="leftDrawer = !leftDrawer"
+          ></v-app-bar-nav-icon>
+        </template>
+      </v-tooltip>
+
       <v-app-bar-title>
         BiMark Playground
-        <v-tooltip text="Toggle View/Edit">
+        <v-tooltip text="Toggle View/Edit" location="right">
           <template v-slot:activator="{ props }">
             <v-btn v-bind="props" icon @click="toggleView">
               <v-icon v-if="view">mdi-pencil-outline</v-icon>
@@ -12,6 +21,15 @@
           </template>
         </v-tooltip>
       </v-app-bar-title>
+      <template v-slot:append>
+        <v-tooltip text="Toggle Reversed References" location="left">
+          <template v-slot:activator="{ props }">
+            <v-btn v-bind="props" icon @click="rightDrawer = !rightDrawer">
+              <v-icon>mdi-dots-vertical</v-icon>
+            </v-btn>
+          </template>
+        </v-tooltip>
+      </template>
     </v-app-bar>
     <v-navigation-drawer v-model="leftDrawer" location="left">
       <v-list nav density="compact">
