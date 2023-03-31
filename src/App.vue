@@ -161,6 +161,7 @@ const render = async () => {
 };
 
 const updateReverseLinks = (hash: string) => {
+  reverseLinks.value = [];
   bm.id2def.get(hash)?.refs.forEach((ref) => {
     reverseLinks.value.push({
       title: `Line: ${ref.fragment.position.start.line}`,
