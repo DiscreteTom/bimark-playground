@@ -9,7 +9,14 @@
   "dependencies": {
     "@mdi/font": "7.0.96",
     "bimark": "^0.3.0",
+    "node-html-parser": "^6.1.5",
+    "rehype-slug": "^5.1.0",
+    "rehype-stringify": "^9.0.3",
+    "remark-gfm": "^3.0.1",
+    "remark-parse": "^10.0.1",
+    "remark-rehype": "^10.1.0",
     "roboto-fontface": "*",
+    "unified": "^10.1.2",
     "vue": "^3.2.38",
     "vuetify": "^3.0.0",
     "webfontloader": "^1.0.0"

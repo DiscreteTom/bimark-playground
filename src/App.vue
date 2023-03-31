@@ -14,6 +14,15 @@
       </v-app-bar-title>
     </v-app-bar>
     <v-navigation-drawer v-model="leftDrawer" location="left">
+      <v-list nav>
+        <v-list-item
+          v-for="link in tocLinks"
+          :key="link.href"
+          :href="link.href"
+        >
+          {{ link.title }}
+        </v-list-item>
+      </v-list>
     </v-navigation-drawer>
     <v-navigation-drawer v-model="rightDrawer" location="right">
     </v-navigation-drawer>
@@ -42,12 +51,19 @@
 import { ref } from "vue";
 import "./assets/github.css";
 import { BiMark } from "bimark";
+import { parse } from "node-html-parser";
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import remarkGfm from "remark-gfm";
+import remarkRehype from "remark-rehype";
+import rehypeStringify from "rehype-stringify";
+import rehypeSlug from "rehype-slug";
 
 // mode: edit | view
 const view = ref(false);
-
 const leftDrawer = ref(true);
 const rightDrawer = ref(true);
+const tocLinks = ref<{ title: string; href: string }[]>([]);
 const container = ref<HTMLElement | null>(null);
 const text = ref(`# [[BiMark]]
 
@@ -57,15 +73,35 @@ Once bidirectional links are created, you can use it to navigate between markdow
 
 const toggleView = () => {
   view.value = !view.value;
-
   if (view.value) {
-    const bm = new BiMark();
-    bm.collect("", text.value);
-    container.value!.innerHTML = bm.render("", text.value, {
-      output: {
-        html: true,
-      },
-    });
+    render();
   }
+};
+
+const render = async () => {
+  const bm = new BiMark();
+  bm.collect("", text.value);
+  const markdown = bm.render("", text.value);
+  const html = String(
+    await unified()
+      .use(remarkParse)
+      .use(remarkGfm)
+      .use(remarkRehype)
+      .use(rehypeSlug)
+      .use(rehypeStringify)
+      .process(markdown)
+  );
+  container.value!.innerHTML = html;
+
+  // collect toc links
+  tocLinks.value = [];
+  parse(html)
+    .querySelectorAll("h1, h2, h3, h4, h5, h6")
+    .forEach((el) => {
+      tocLinks.value.push({
+        title: el.text,
+        href: `#${el.id}`,
+      });
+    });
 };
 </script>
