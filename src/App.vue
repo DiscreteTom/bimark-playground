@@ -14,13 +14,17 @@
       </v-app-bar-title>
     </v-app-bar>
     <v-navigation-drawer v-model="leftDrawer" location="left">
-      <v-list nav>
+      <v-list nav density="compact">
         <v-list-item
           v-for="link in tocLinks"
           :key="link.href"
           :href="link.href"
+          density="compact"
         >
-          {{ link.title }}
+          <span v-for="x in link.lvl - 1" :key="x" class="ml-3"></span>
+          <span :style="{ 'font-weight': 1000 / link.lvl }">
+            {{ link.title }}
+          </span>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
@@ -63,7 +67,7 @@ import rehypeSlug from "rehype-slug";
 const view = ref(false);
 const leftDrawer = ref(true);
 const rightDrawer = ref(true);
-const tocLinks = ref<{ title: string; href: string }[]>([]);
+const tocLinks = ref<{ title: string; href: string; lvl: number }[]>([]);
 const container = ref<HTMLElement | null>(null);
 const text = ref(`# [[BiMark]]
 
@@ -101,6 +105,7 @@ const render = async () => {
       tocLinks.value.push({
         title: el.text,
         href: `#${el.id}`,
+        lvl: Number(el.tagName[1]),
       });
     });
 };
