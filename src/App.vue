@@ -9,7 +9,6 @@
           ></v-app-bar-nav-icon>
         </template>
       </v-tooltip>
-
       <v-app-bar-title>
         BiMark Playground
         <v-tooltip text="Toggle View/Edit" location="right">
@@ -31,6 +30,7 @@
         </v-tooltip>
       </template>
     </v-app-bar>
+
     <v-navigation-drawer v-model="leftDrawer" location="left">
       <v-list nav density="compact">
         <v-list-item
@@ -46,8 +46,20 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
+
     <v-navigation-drawer v-model="rightDrawer" location="right">
+      <v-list nav density="compact">
+        <v-list-item
+          v-for="link in reverseLinks"
+          :key="link.href"
+          :href="link.href"
+          density="compact"
+        >
+          {{ link.title }}
+        </v-list-item>
+      </v-list>
     </v-navigation-drawer>
+
     <v-main>
       <v-textarea
         v-show="!view"
@@ -70,7 +82,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watch, onMounted } from "vue";
 import "./assets/github.css";
 import { BiMark } from "bimark";
 import { parse } from "node-html-parser";
@@ -80,13 +92,17 @@ import remarkGfm from "remark-gfm";
 import remarkRehype from "remark-rehype";
 import rehypeStringify from "rehype-stringify";
 import rehypeSlug from "rehype-slug";
+import { useRoute } from "vue-router";
 
 // mode: edit | view
 const view = ref(false);
+let bm = new BiMark();
 const leftDrawer = ref(true);
 const rightDrawer = ref(true);
 const tocLinks = ref<{ title: string; href: string; lvl: number }[]>([]);
+const reverseLinks = ref<{ title: string; href: string }[]>([]);
 const container = ref<HTMLElement | null>(null);
+const route = useRoute();
 const text = ref(`# [[BiMark]]
 
 BiMark is a tool to auto create [[bidirectional links]] between markdown files.
@@ -100,8 +116,20 @@ const toggleView = () => {
   }
 };
 
+watch(
+  () => route?.hash,
+  () => {
+    if (route?.hash.length > 1) updateReverseLinks(route?.hash.slice(1));
+  }
+);
+
+onMounted(() => {
+  if (route?.hash.length > 1) updateReverseLinks(route?.hash.slice(1));
+});
+
 const render = async () => {
-  const bm = new BiMark();
+  bm = new BiMark();
+  // render html
   bm.collect("", text.value);
   const markdown = bm.render("", text.value);
   const html = String(
@@ -126,5 +154,14 @@ const render = async () => {
         lvl: Number(el.tagName[1]),
       });
     });
+};
+
+const updateReverseLinks = (hash: string) => {
+  bm.id2def.get(hash)?.refs.forEach((ref) => {
+    reverseLinks.value.push({
+      title: `Line: ${ref.fragment.position.start.line}`,
+      href: "#" + bm.refIdGenerator(ref),
+    });
+  });
 };
 </script>
