@@ -28,6 +28,7 @@
 import { ref } from "vue";
 import Edit from "./components/Edit.vue";
 import View from "./components/View.vue";
+import "./assets/github.css";
 
 // mode: edit | view
 const view = ref(false);
