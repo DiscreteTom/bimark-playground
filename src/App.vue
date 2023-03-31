@@ -13,9 +13,9 @@
         </v-tooltip>
       </v-app-bar-title>
     </v-app-bar>
-    <v-navigation-drawer v-if="view" v-model="leftDrawer" location="left">
+    <v-navigation-drawer v-model="leftDrawer" location="left">
     </v-navigation-drawer>
-    <v-navigation-drawer v-if="view" v-model="rightDrawer" location="right">
+    <v-navigation-drawer v-model="rightDrawer" location="right">
     </v-navigation-drawer>
     <v-main>
       <Edit v-if="!view" :text="text"></Edit>
