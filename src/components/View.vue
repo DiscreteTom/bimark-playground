@@ -1,6 +1,10 @@
 <template>
   <v-container>
-    <div ref="container" class="markdown-body"></div>
+    <div
+      ref="container"
+      class="markdown-body"
+      style="padding: 32px; border: 1px solid #c4c6ca"
+    ></div>
   </v-container>
 </template>
 
