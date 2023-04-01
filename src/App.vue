@@ -138,7 +138,49 @@ const text = ref(`# [[BiMark]]
 
 BiMark is a tool to auto create [[bidirectional links]] between markdown files.
 
-Once bidirectional links are created, you can use it to navigate between markdown files.`);
+Once bidirectional links are created, you can use it to navigate between markdown files.
+
+## [[Definition|definition]]
+
+You can create definitions by using double square brackets. For example, \`[[BiMark]]\` is a definition.
+
+For advanced usage, you can use \`|\` to specify the alias of the definition. For example, \`[[BiMark|bimark]]\` is a definition with alias \`bimark\`.
+You can also use \`:\` to specify the id of the definition. For example, \`[[BiMark:bm]]\` is a definition with id \`bm\`.
+
+As you can see, you can create definitions in paragraphs, headings, quotes, lists, etc.
+
+### This is a [[heading]]
+
+> This is a [[quote]].
+
+- This is a [[list]].
+
+## [[Reference|reference]]
+
+BiMark will auto identify references and create bidirectional links between definitions and references.
+
+You can auto explicitly create references. For example, \`[[@BiMark]]\` or \`[[#bimark]]\`.
+
+If you don't want some content to be a reference, you can use \`!\` to escape it. For example, [[!this sentence will not be a reference.]]
+
+## Other Playground Features
+
+You can edit this markdown content in the edit view. Click the button in the top to toggle the view.
+
+When you view the rendered markdown, you will see a table of contents on the left. You can click the links to navigate to the corresponding section.
+
+When you click a definition/reference, you will see a list of reverse references on the right. You can click the links to navigate to the corresponding reference.
+
+This playground support GFM (Github Flavored Markdown) and HTML. For example, literal URL will be transformed to a link, e.g. https://github.com/DiscreteTom/bimark.
+
+Besides, all headings will be assigned an id. For example, \`<h1 id="heading">Heading</h1>\`.
+
+## Other Resources
+
+- API, see [bimark](https://github.com/DiscreteTom/bimark).
+- CLI, see [bimark-cli](https://github.com/DiscreteTom/bimark-cli).
+- VSCode extension, see [vscode-bimark](https://github.com/DiscreteTom/vscode-bimark).
+`);
 
 const toggleView = () => {
   view.value = !view.value;
