@@ -278,7 +278,7 @@ const svg = d3
   .append("svg")
   .attr("width", window.innerWidth)
   .attr("height", window.innerHeight)
-  .style("position", "absolute")
+  .style("position", "fixed")
   .style("top", 0)
   .style("pointer-events", "none")
   .style("z-index", 9999);
