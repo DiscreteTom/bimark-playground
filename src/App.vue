@@ -55,13 +55,27 @@
     </v-navigation-drawer>
 
     <v-navigation-drawer v-model="rightDrawer" location="right">
-      <v-list nav density="compact">
-        <v-list-item>Reverse References</v-list-item>
-        <v-divider class="mb-3"></v-divider>
-        <v-list-item v-if="reverseLinks.length == 0">
+      <v-list nav density="compact" v-if="reverseLinks.length == 0">
+        <v-list-item>
           <span style="font-weight: bold; color: gray">
             Select a Definition to see reverse references in View Mode
           </span>
+        </v-list-item>
+      </v-list>
+      <v-list nav density="compact" v-else>
+        <v-list-item>
+          <span style="font-weight: bold; color: gray"> Definition </span>
+        </v-list-item>
+        <v-list-item
+          :href="'#' + reverseLinks[0].ref.def.id"
+          density="compact"
+          @mouseenter="showArrow($event, '#' + reverseLinks[0].ref.def.id)"
+          @mouseleave="removeArrow"
+          >{{ reverseLinks[0].ref.def.name }}</v-list-item
+        >
+        <v-divider class="mb-3"></v-divider>
+        <v-list-item style="font-weight: bold; color: gray">
+          <span> Reverse References </span>
         </v-list-item>
         <v-list-item
           v-for="link in reverseLinks"
@@ -100,7 +114,7 @@
 <script setup lang="ts">
 import { ref, watch, onMounted } from "vue";
 import "./assets/github.css";
-import { BiMark } from "bimark";
+import { BiMark, Reference } from "bimark";
 import { parse } from "node-html-parser";
 import { unified } from "unified";
 import remarkParse from "remark-parse";
@@ -117,7 +131,7 @@ let bm = new BiMark();
 const leftDrawer = ref(true);
 const rightDrawer = ref(true);
 const tocLinks = ref<{ title: string; href: string; lvl: number }[]>([]);
-const reverseLinks = ref<{ title: string; href: string }[]>([]);
+const reverseLinks = ref<{ title: string; href: string; ref: Reference }[]>([]);
 const container = ref<HTMLElement | null>(null);
 const route = useRoute();
 const text = ref(`# [[BiMark]]
@@ -183,6 +197,7 @@ const updateReverseLinks = () => {
     reverseLinks.value.push({
       title: before + "..." + after,
       href: "#" + ref.id,
+      ref,
     });
   });
   removeArrow();
