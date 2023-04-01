@@ -35,6 +35,11 @@
       <v-list nav density="compact">
         <v-list-item>Table of Content</v-list-item>
         <v-divider class="mb-3"></v-divider>
+        <v-list-item v-if="tocLinks.length == 0">
+          <span style="font-weight: bold; color: gray">
+            Render the Markdown with Headings to see the Toc.
+          </span>
+        </v-list-item>
         <v-list-item
           v-for="link in tocLinks"
           :key="link.href"
@@ -53,6 +58,11 @@
       <v-list nav density="compact">
         <v-list-item>Reverse References</v-list-item>
         <v-divider class="mb-3"></v-divider>
+        <v-list-item v-if="reverseLinks.length == 0">
+          <span style="font-weight: bold; color: gray">
+            Select a Definition to see reverse references in View Mode
+          </span>
+        </v-list-item>
         <v-list-item
           v-for="link in reverseLinks"
           :key="link.href"
