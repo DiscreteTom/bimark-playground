@@ -150,9 +150,9 @@ const render = async () => {
     await unified()
       .use(remarkParse)
       .use(remarkGfm)
-      .use(remarkRehype)
+      .use(remarkRehype, { allowDangerousHtml: true })
       .use(rehypeSlug)
-      .use(rehypeStringify)
+      .use(rehypeStringify, { allowDangerousHtml: true })
       .process(markdown)
   );
   container.value!.innerHTML = html;
