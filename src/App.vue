@@ -300,8 +300,7 @@ const showArrow = (e: MouseEvent, targetHash: string) => {
   updateArrow();
 };
 const updateArrow = () => {
-  console.log("updateArrow");
-  removeArrow();
+  svg.selectAll("*").remove(); // clear svg
 
   if (!indicateFrom.value || !indicateTo.value) {
     return;
@@ -367,6 +366,8 @@ const updateArrow = () => {
     .attr("marker-end", "url(#arrowhead)");
 };
 const removeArrow = () => {
-  svg.selectAll("*").remove();
+  indicateFrom.value = null;
+  indicateTo.value = null;
+  updateArrow();
 };
 </script>
