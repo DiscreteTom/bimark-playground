@@ -234,7 +234,7 @@ const render = async () => {
       const url = new URL(href);
       if (url.hash.startsWith("#") && url.pathname === route.path) {
         e.preventDefault();
-        router.push(href);
+        router.push(url.hash);
       }
     });
   });
