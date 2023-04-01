@@ -301,20 +301,14 @@ const showArrow = (e: MouseEvent, targetHash: string) => {
     .y(function (d) {
       return d[1];
     })
-    .curve(d3.curveBasis);
+    .curve(d3.curveNatural);
 
   // Create an array of points for the folded line
   var points = [
-    [fromRect.left + fromRect.width / 2, fromRect.top + fromRect.height / 2],
-    [
-      fromRect.left + fromRect.width / 2,
-      (fromRect.top + toRect.top + toRect.height) / 2,
-    ],
-    [
-      toRect.left + toRect.width / 2,
-      (fromRect.top + toRect.top + toRect.height) / 2,
-    ],
-    [toRect.left + toRect.width / 2, toRect.top + toRect.height / 2],
+    [fromRect.left, fromRect.top + fromRect.height / 2],
+    [(fromRect.left + toRect.right) / 2, fromRect.top + fromRect.height / 2],
+    [(fromRect.left + toRect.right) / 2, toRect.top + toRect.height / 2],
+    [toRect.right, toRect.top + toRect.height / 2],
   ] as [number, number][];
 
   // Create a marker for the arrowhead
@@ -328,6 +322,7 @@ const showArrow = (e: MouseEvent, targetHash: string) => {
     .attr("markerWidth", 8)
     .attr("markerHeight", 8)
     .attr("orient", "auto")
+    .attr("fill", "red")
     .append("path")
     .attr("d", "M 0 0 L 10 5 L 0 10 z");
 
@@ -335,7 +330,7 @@ const showArrow = (e: MouseEvent, targetHash: string) => {
   svg
     .append("path")
     .attr("d", line(points))
-    .attr("stroke", "black")
+    .attr("stroke", "pink")
     .attr("stroke-width", 2)
     .attr("fill", "none")
     .attr("marker-end", "url(#arrowhead)");
