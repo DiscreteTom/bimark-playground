@@ -131,14 +131,12 @@ const toggleView = () => {
 };
 
 watch(
-  () => route?.hash,
-  () => {
-    if (route?.hash.length > 1) updateReverseLinks(route?.hash.slice(1));
-  }
+  () => route.hash,
+  () => updateReverseLinks()
 );
 
 onMounted(() => {
-  if (route?.hash.length > 1) updateReverseLinks(route?.hash.slice(1));
+  updateReverseLinks();
 });
 
 const render = async () => {
@@ -170,7 +168,8 @@ const render = async () => {
     });
 };
 
-const updateReverseLinks = (id: string) => {
+const updateReverseLinks = () => {
+  const id = route.hash.slice(1);
   reverseLinks.value = [];
   bm.id2def.get(id)?.refs.forEach((ref) => {
     const line = text.value.split("\n")[ref.fragment.position.start.line - 1];
