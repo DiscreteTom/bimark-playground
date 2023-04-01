@@ -54,7 +54,11 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-navigation-drawer v-model="rightDrawer" location="right">
+    <v-navigation-drawer
+      v-model="rightDrawer"
+      location="right"
+      @scroll.capture="updateArrow"
+    >
       <v-list nav density="compact" v-if="reverseLinks.length == 0">
         <v-list-item>
           <span style="font-weight: bold; color: gray">
