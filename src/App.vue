@@ -280,7 +280,8 @@ const svg = d3
   .attr("height", window.innerHeight)
   .style("position", "absolute")
   .style("top", 0)
-  .style("pointer-events", "none");
+  .style("pointer-events", "none")
+  .style("z-index", 9999);
 const showArrow = (e: MouseEvent, targetHash: string) => {
   removeArrow();
 
