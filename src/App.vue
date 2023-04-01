@@ -165,7 +165,7 @@ const updateReverseLinks = (hash: string) => {
   bm.id2def.get(hash)?.refs.forEach((ref) => {
     reverseLinks.value.push({
       title: `Line: ${ref.fragment.position.start.line}`,
-      href: "#" + bm.refIdGenerator(ref),
+      href: "#" + ref.id,
     });
   });
 };
