@@ -68,6 +68,8 @@
           :key="link.href"
           :href="link.href"
           density="compact"
+          @mouseenter="showArrow($event, link.href)"
+          @mouseleave="removeArrow"
         >
           {{ link.title }}
         </v-list-item>
@@ -107,6 +109,7 @@ import remarkRehype from "remark-rehype";
 import rehypeStringify from "rehype-stringify";
 import rehypeSlug from "rehype-slug";
 import { useRoute } from "vue-router";
+import * as d3 from "d3";
 
 // mode: edit | view
 const view = ref(false);
@@ -182,5 +185,77 @@ const updateReverseLinks = () => {
       href: "#" + ref.id,
     });
   });
+  removeArrow();
+};
+
+const svg = d3
+  .select("body")
+  .append("svg")
+  .attr("width", window.innerWidth)
+  .attr("height", window.innerHeight)
+  .style("position", "absolute")
+  .style("top", 0)
+  .style("pointer-events", "none");
+const showArrow = (e: MouseEvent, targetHash: string) => {
+  removeArrow();
+
+  // Select the two elements to connect
+  const fromElement = d3.select(e.target as HTMLElement);
+  const toElement = d3.select(targetHash);
+
+  // Get the positions of the two elements
+  const fromRect = fromElement.node()!.getBoundingClientRect();
+  const toRect = (toElement.node()! as Element).getBoundingClientRect();
+
+  // Define the shape of the folded line
+  var line = d3
+    .line()
+    .x(function (d) {
+      return d[0];
+    })
+    .y(function (d) {
+      return d[1];
+    })
+    .curve(d3.curveBasis);
+
+  // Create an array of points for the folded line
+  var points = [
+    [fromRect.left + fromRect.width / 2, fromRect.top + fromRect.height / 2],
+    [
+      fromRect.left + fromRect.width / 2,
+      (fromRect.top + toRect.top + toRect.height) / 2,
+    ],
+    [
+      toRect.left + toRect.width / 2,
+      (fromRect.top + toRect.top + toRect.height) / 2,
+    ],
+    [toRect.left + toRect.width / 2, toRect.top + toRect.height / 2],
+  ] as [number, number][];
+
+  // Create a marker for the arrowhead
+  svg
+    .append("defs")
+    .append("marker")
+    .attr("id", "arrowhead")
+    .attr("viewBox", "0 0 10 10")
+    .attr("refX", 8)
+    .attr("refY", 5)
+    .attr("markerWidth", 8)
+    .attr("markerHeight", 8)
+    .attr("orient", "auto")
+    .append("path")
+    .attr("d", "M 0 0 L 10 5 L 0 10 z");
+
+  // Draw the folded line
+  svg
+    .append("path")
+    .attr("d", line(points))
+    .attr("stroke", "black")
+    .attr("stroke-width", 2)
+    .attr("fill", "none")
+    .attr("marker-end", "url(#arrowhead)");
+};
+const removeArrow = () => {
+  svg.selectAll("*").remove();
 };
 </script>
