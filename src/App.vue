@@ -170,9 +170,9 @@ const render = async () => {
     });
 };
 
-const updateReverseLinks = (hash: string) => {
+const updateReverseLinks = (id: string) => {
   reverseLinks.value = [];
-  bm.id2def.get(hash)?.refs.forEach((ref) => {
+  bm.id2def.get(id)?.refs.forEach((ref) => {
     const line = text.value.split("\n")[ref.fragment.position.start.line - 1];
     const before = line.slice(0, ref.fragment.position.start.column - 1);
     const after = line.slice(ref.fragment.position.end.column);
