@@ -166,6 +166,8 @@ const render = async () => {
         lvl: Number(el.tagName[1]),
       });
     });
+
+  updateReverseLinks();
 };
 
 const updateReverseLinks = () => {
