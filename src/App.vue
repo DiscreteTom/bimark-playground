@@ -293,6 +293,19 @@ const showArrow = (e: MouseEvent, targetHash: string) => {
   const fromRect = fromElement.node()!.getBoundingClientRect();
   const toRect = (toElement.node()! as Element).getBoundingClientRect();
 
+  // draw a bounding box for the target element
+  svg
+    .append("rect")
+    .attr("x", toRect.left)
+    .attr("y", toRect.top)
+    .attr("width", toRect.width)
+    .attr("height", toRect.height)
+    .attr("rx", 5)
+    .attr("ry", 5)
+    .attr("fill", "none")
+    .attr("stroke", "pink")
+    .attr("stroke-width", 2);
+
   // Define the shape of the folded line
   var line = d3
     .line()
