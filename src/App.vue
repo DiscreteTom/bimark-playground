@@ -190,7 +190,22 @@ const render = async () => {
 const updateReverseLinks = () => {
   const id = route.hash.slice(1);
   reverseLinks.value = [];
-  bm.id2def.get(id)?.refs.forEach((ref) => {
+
+  // get def
+  let def = bm.id2def.get(id);
+  if (!def) {
+    // maybe ref?
+    for (const [_, d] of bm.id2def) {
+      for (const ref of d.refs) {
+        if (ref.id === id) {
+          def = d;
+          break;
+        }
+      }
+    }
+  }
+
+  def?.refs.forEach((ref) => {
     const line = text.value.split("\n")[ref.fragment.position.start.line - 1];
     const before = line.slice(0, ref.fragment.position.start.column - 1);
     const after = line.slice(ref.fragment.position.end.column);
