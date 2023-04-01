@@ -34,7 +34,7 @@
     <v-navigation-drawer v-model="leftDrawer" location="left">
       <v-list nav density="compact">
         <v-list-item>Table of Content</v-list-item>
-        <v-divider></v-divider>
+        <v-divider class="mb-3"></v-divider>
         <v-list-item
           v-for="link in tocLinks"
           :key="link.href"
@@ -52,7 +52,7 @@
     <v-navigation-drawer v-model="rightDrawer" location="right">
       <v-list nav density="compact">
         <v-list-item>Reverse References</v-list-item>
-        <v-divider></v-divider>
+        <v-divider class="mb-3"></v-divider>
         <v-list-item
           v-for="link in reverseLinks"
           :key="link.href"
