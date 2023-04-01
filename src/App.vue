@@ -21,7 +21,25 @@
         </v-tooltip>
       </v-app-bar-title>
       <template v-slot:append>
-        <v-tooltip text="Toggle Reversed References" location="left">
+        <v-tooltip text="Home" location="bottom">
+          <template v-slot:activator="{ props }">
+            <v-btn v-bind="props" icon @click="$router.push($route.path)">
+              <v-icon>mdi-home</v-icon>
+            </v-btn>
+          </template>
+        </v-tooltip>
+        <v-tooltip text="View on GitHub" location="bottom">
+          <template v-slot:activator="{ props }">
+            <v-btn
+              v-bind="props"
+              icon
+              href="https://github.com/DiscreteTom/bimark-playground"
+            >
+              <v-icon>mdi-github</v-icon>
+            </v-btn>
+          </template>
+        </v-tooltip>
+        <v-tooltip text="Toggle Reversed References" location="bottom">
           <template v-slot:activator="{ props }">
             <v-btn v-bind="props" icon @click="rightDrawer = !rightDrawer">
               <v-icon>mdi-dots-vertical</v-icon>
