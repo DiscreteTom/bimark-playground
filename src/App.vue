@@ -42,8 +42,8 @@
         </v-list-item>
         <v-list-item
           v-for="link in tocLinks"
-          :key="link.href"
-          :href="link.href"
+          :key="link.to"
+          :to="link.to"
           density="compact"
         >
           <span v-for="x in link.lvl - 1" :key="x" class="ml-3"></span>
@@ -67,7 +67,7 @@
           <span style="font-weight: bold; color: gray"> Definition </span>
         </v-list-item>
         <v-list-item
-          :href="'#' + reverseLinks[0].ref.def.id"
+          :to="'#' + reverseLinks[0].ref.def.id"
           density="compact"
           @mouseenter="showArrow($event, '#' + reverseLinks[0].ref.def.id)"
           @mouseleave="removeArrow"
@@ -79,10 +79,10 @@
         </v-list-item>
         <v-list-item
           v-for="link in reverseLinks"
-          :key="link.href"
-          :href="link.href"
+          :key="link.to"
+          :to="link.to"
           density="compact"
-          @mouseenter="showArrow($event, link.href)"
+          @mouseenter="showArrow($event, link.to)"
           @mouseleave="removeArrow"
         >
           {{ link.title }}
@@ -122,7 +122,7 @@ import remarkGfm from "remark-gfm";
 import remarkRehype from "remark-rehype";
 import rehypeStringify from "rehype-stringify";
 import rehypeSlug from "rehype-slug";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import * as d3 from "d3";
 
 // mode: edit | view
@@ -130,10 +130,11 @@ const view = ref(false);
 let bm = new BiMark();
 const leftDrawer = ref(true);
 const rightDrawer = ref(true);
-const tocLinks = ref<{ title: string; href: string; lvl: number }[]>([]);
-const reverseLinks = ref<{ title: string; href: string; ref: Reference }[]>([]);
+const tocLinks = ref<{ title: string; to: string; lvl: number }[]>([]);
+const reverseLinks = ref<{ title: string; to: string; ref: Reference }[]>([]);
 const container = ref<HTMLElement | null>(null);
 const route = useRoute();
+const router = useRouter();
 const text = ref(`# [[BiMark]]
 
 BiMark is a tool to auto create [[bidirectional links]] between markdown files.
@@ -214,6 +215,18 @@ const render = async () => {
   );
   container.value!.innerHTML = html;
 
+  // register router links to realize smooth scrolling
+  container.value?.querySelectorAll("a").forEach((el) => {
+    el.addEventListener("click", (e) => {
+      const href = el.href;
+      const url = new URL(href);
+      if (url.hash.startsWith("#") && url.pathname === route.path) {
+        e.preventDefault();
+        router.push(href);
+      }
+    });
+  });
+
   // collect toc links
   tocLinks.value = [];
   parse(html)
@@ -221,7 +234,7 @@ const render = async () => {
     .forEach((el) => {
       tocLinks.value.push({
         title: el.text,
-        href: `#${el.id}`,
+        to: `#${el.id}`,
         lvl: Number(el.tagName[1]),
       });
     });
@@ -253,7 +266,7 @@ const updateReverseLinks = () => {
     const after = line.slice(ref.fragment.position.end.column);
     reverseLinks.value.push({
       title: before + "..." + after,
-      href: "#" + ref.id,
+      to: "#" + ref.id,
       ref,
     });
   });
