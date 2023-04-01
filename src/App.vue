@@ -69,7 +69,7 @@
         <v-list-item
           :to="'#' + reverseLinks[0].ref.def.id"
           density="compact"
-          @mouseenter="showArrow($event, '#' + reverseLinks[0].ref.def.id)"
+          @mousemove="showArrow($event, '#' + reverseLinks[0].ref.def.id)"
           @mouseleave="removeArrow"
           >{{ reverseLinks[0].ref.def.name }}</v-list-item
         >
@@ -82,7 +82,7 @@
           :key="link.to"
           :to="link.to"
           density="compact"
-          @mouseenter="showArrow($event, link.to)"
+          @mousemove="showArrow($event, link.to)"
           @mouseleave="removeArrow"
         >
           {{ link.title }}
