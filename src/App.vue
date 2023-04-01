@@ -90,7 +90,7 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-main>
+    <v-main v-scroll="updateArrow">
       <v-textarea
         v-show="!view"
         auto-grow
@@ -133,6 +133,18 @@ const rightDrawer = ref(true);
 const tocLinks = ref<{ title: string; to: string; lvl: number }[]>([]);
 const reverseLinks = ref<{ title: string; to: string; ref: Reference }[]>([]);
 const container = ref<HTMLElement | null>(null);
+const indicateFrom = ref<d3.Selection<
+  HTMLElement,
+  unknown,
+  null,
+  undefined
+> | null>(null);
+const indicateTo = ref<d3.Selection<
+  d3.BaseType,
+  unknown,
+  HTMLElement,
+  any
+> | null>(null);
 const route = useRoute();
 const router = useRouter();
 const text = ref(`# [[BiMark]]
@@ -283,15 +295,20 @@ const svg = d3
   .style("pointer-events", "none")
   .style("z-index", 9999);
 const showArrow = (e: MouseEvent, targetHash: string) => {
+  indicateFrom.value = d3.select(e.target as HTMLElement);
+  indicateTo.value = d3.select(targetHash);
+  updateArrow();
+};
+const updateArrow = () => {
+  console.log("updateArrow");
   removeArrow();
 
-  // Select the two elements to connect
-  const fromElement = d3.select(e.target as HTMLElement);
-  const toElement = d3.select(targetHash);
+  if (!indicateFrom.value || !indicateTo.value) {
+    return;
+  }
 
-  // Get the positions of the two elements
-  const fromRect = fromElement.node()!.getBoundingClientRect();
-  const toRect = (toElement.node()! as Element).getBoundingClientRect();
+  const fromRect = indicateFrom.value.node()!.getBoundingClientRect();
+  const toRect = (indicateTo.value.node()! as Element).getBoundingClientRect();
 
   // draw a bounding box for the target element
   svg
