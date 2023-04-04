@@ -318,7 +318,7 @@ const svg = d3
   .style("z-index", 9999);
 const showArrow = (e: MouseEvent, targetHash: string) => {
   indicateFrom.value = d3.select(e.target as HTMLElement);
-  indicateTo.value = d3.select(targetHash);
+  indicateTo.value = d3.select(`[id="${targetHash.slice(1)}"]`);
   updateArrow();
 };
 const updateArrow = () => {
