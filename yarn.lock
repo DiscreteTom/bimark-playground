@@ -450,10 +450,10 @@ bcp-47-match@^2.0.0:
   resolved "https://registry.npmmirror.com/bcp-47-match/-/bcp-47-match-2.0.3.tgz#603226f6e5d3914a581408be33b28a53144b09d0"
   integrity sha512-JtTezzbAibu8G0R9op9zb3vcWZd9JF6M0xOYGPn0fNCd7wOpRB1mU2mH9T8gaBGbAAyIIVgB2G7xG0GP98zMAQ==
 
-bimark@^0.3.1:
-  version "0.3.1"
-  resolved "https://registry.npmmirror.com/bimark/-/bimark-0.3.1.tgz#7c511d3f88c6eee7a5ac2953df5c7f8594e7d6b4"
-  integrity sha512-GyJZ1Ud6Q25Nujxlt8UnWZKQOEQ2Ez+80vS5n3kzcLNnqh2fPbkHunty0s2Ucc75GN88W/groBEely345Q8STA==
+bimark@^0.3.6:
+  version "0.3.6"
+  resolved "https://registry.npmmirror.com/bimark/-/bimark-0.3.6.tgz#ad2aeb884df2c3b43f2eaf7bc300372b4a74788a"
+  integrity sha512-7BNBbxud4evAF8U8kbAen9L/mV7Zco+QZx9WAi0S2EVJO6LqxhU8itMlPKhBqkfxD4sumzJ1hbWcVz6NTri/lQ==
   dependencies:
     hast-util-select "^5.0.5"
     rehype "^12.0.1"
@@ -461,7 +461,6 @@ bimark@^0.3.1:
     remark "^14.0.2"
     remark-rehype "^10.1.0"
     unified "^10.1.2"
-    unist-util-visit "^4.1.2"
     uslug "^1.0.4"
 
 boolbase@^1.0.0:
@@ -1827,7 +1826,7 @@ remark-rehype@^10.1.0:
     mdast-util-to-hast "^12.1.0"
     unified "^10.0.0"
 
-remark-stringify@^10.0.0:
+remark-stringify@^10.0.0, remark-stringify@^10.0.2:
   version "10.0.2"
   resolved "https://registry.npmmirror.com/remark-stringify/-/remark-stringify-10.0.2.tgz#50414a6983f5008eb9e72eed05f980582d1f69d7"
   integrity sha512-6wV3pvbPvHkbNnWB0wdDvVFHOe1hBRAx1Q/5g/EpH4RppAII6J8Gnwe7VbHuXaoKIF6LAg6ExTel/+kNqSQ7lw==
@@ -1989,7 +1988,7 @@ unist-util-visit-parents@^5.0.0, unist-util-visit-parents@^5.1.1:
     "@types/unist" "^2.0.0"
     unist-util-is "^5.0.0"
 
-unist-util-visit@^4.0.0, unist-util-visit@^4.1.2:
+unist-util-visit@^4.0.0:
   version "4.1.2"
   resolved "https://registry.npmmirror.com/unist-util-visit/-/unist-util-visit-4.1.2.tgz#125a42d1eb876283715a3cb5cceaa531828c72e2"
   integrity sha512-MSd8OUGISqHdVvfY9TPhyK2VdUrPgxkUtWSuMHF6XAAFuL4LokseigBnZtPnJMu+FbynTkFNnFlyjxpVKujMRg==
