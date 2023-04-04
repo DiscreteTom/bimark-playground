@@ -140,6 +140,7 @@ import { BiMark, Reference } from "bimark";
 import { parse } from "node-html-parser";
 import { unified } from "unified";
 import remarkParse from "remark-parse";
+import remarkStringify from "remark-stringify";
 import remarkGfm from "remark-gfm";
 import remarkRehype from "remark-rehype";
 import rehypeStringify from "rehype-stringify";
@@ -235,13 +236,20 @@ onMounted(() => {
 
 const render = async () => {
   bm = new BiMark();
-  // render html
-  bm.collect("", text.value);
-  const markdown = bm.render("", text.value);
-  const html = String(
+  // render gfm before render bimark, to prevent bimark collect def/refs from literal URL
+  const raw = String(
     await unified()
       .use(remarkParse)
       .use(remarkGfm)
+      .use(remarkStringify)
+      .process(text.value)
+  );
+  // render html
+  bm.collect("", raw);
+  const markdown = bm.render("", raw);
+  const html = String(
+    await unified()
+      .use(remarkParse)
       .use(remarkRehype, { allowDangerousHtml: true })
       .use(rehypeSlug)
       .use(rehypeStringify, { allowDangerousHtml: true })
