@@ -20,7 +20,7 @@ const router = VueRouter.createRouter({
       if (el) {
         return {
           el,
-          top: 64, // app bar height
+          top: 64 + 20, // app bar height + margin
           behavior: "smooth",
         };
       }
