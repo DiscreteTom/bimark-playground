@@ -217,6 +217,7 @@ Besides, all headings will be assigned an id. For example, \`<h1 id="heading">He
 - CLI, see [bimark-cli](https://github.com/DiscreteTom/bimark-cli).
 - VSCode extension, see [vscode-bimark](https://github.com/DiscreteTom/vscode-bimark).
 `);
+let markdown = "";
 
 const toggleView = () => {
   view.value = !view.value;
@@ -237,7 +238,7 @@ onMounted(() => {
 const render = async () => {
   bm = new BiMark();
   // render gfm before render bimark, to prevent bimark collect def/refs from literal URL
-  const raw = String(
+  markdown = String(
     await unified()
       .use(remarkParse)
       .use(remarkGfm)
@@ -245,15 +246,15 @@ const render = async () => {
       .process(text.value)
   );
   // render html
-  bm.collect("", raw);
-  const markdown = bm.render("", raw);
+  bm.collect("", markdown);
+  const biMarkdown = bm.render("", markdown);
   const html = String(
     await unified()
       .use(remarkParse)
       .use(remarkRehype, { allowDangerousHtml: true })
       .use(rehypeSlug)
       .use(rehypeStringify, { allowDangerousHtml: true })
-      .process(markdown)
+      .process(biMarkdown)
   );
   container.value!.innerHTML = html;
 
@@ -303,7 +304,7 @@ const updateReverseLinks = () => {
   }
 
   def?.refs.forEach((ref) => {
-    const line = text.value.split("\n")[ref.fragment.position.start.line - 1];
+    const line = markdown.split("\n")[ref.fragment.position.start.line - 1];
     const before = line.slice(0, ref.fragment.position.start.column - 1);
     const after = line.slice(ref.fragment.position.end.column);
     reverseLinks.value.push({
