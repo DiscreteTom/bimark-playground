@@ -284,6 +284,13 @@ const render = async () => {
     });
 
   updateReverseLinks();
+
+  // highlight
+  const id = route.hash.slice(1);
+  const el = document.getElementById(id);
+  if (el) {
+    el.classList.add("highlight");
+  }
 };
 
 const updateReverseLinks = () => {
