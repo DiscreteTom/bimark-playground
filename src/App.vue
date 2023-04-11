@@ -136,6 +136,7 @@
 <script setup lang="ts">
 import { ref, watch, onMounted } from "vue";
 import "./assets/github.css";
+import "./assets/bimark-playground.css";
 import { BiMark, Reference } from "bimark";
 import { parse } from "node-html-parser";
 import { unified } from "unified";

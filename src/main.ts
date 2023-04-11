@@ -14,10 +14,19 @@ const router = VueRouter.createRouter({
     },
   ],
   scrollBehavior(to, from, savedPosition) {
+    // clear highlight
+    if (from.hash) {
+      const id = from.hash.slice(1);
+      const el = document.getElementById(id);
+      if (el) {
+        el.classList.remove("highlight");
+      }
+    }
     if (to.hash) {
       const id = to.hash.slice(1);
       const el = document.getElementById(id);
       if (el) {
+        el.classList.add("highlight");
         return {
           el,
           top: 64 + 20, // app bar height + margin
