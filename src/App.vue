@@ -11,11 +11,32 @@
       </v-tooltip>
       <v-app-bar-title>
         BiMark Playground
-        <v-tooltip text="Toggle View/Edit" location="right">
+        <v-tooltip text="Toggle View/Edit" location="bottom">
           <template v-slot:activator="{ props }">
             <v-btn v-bind="props" icon @click="toggleView">
               <v-icon v-if="view">mdi-pencil-outline</v-icon>
               <v-icon v-else>mdi-eye</v-icon>
+            </v-btn>
+          </template>
+        </v-tooltip>
+        <v-tooltip text="Save in Browser" location="bottom">
+          <template v-slot:activator="{ props }">
+            <v-btn v-bind="props" icon @click="saveText">
+              <v-icon>mdi-content-save</v-icon>
+            </v-btn>
+          </template>
+        </v-tooltip>
+        <v-tooltip text="Load Saved Content" location="bottom">
+          <template v-slot:activator="{ props }">
+            <v-btn v-bind="props" icon @click="loadSavedText">
+              <v-icon>mdi-restore</v-icon>
+            </v-btn>
+          </template>
+        </v-tooltip>
+        <v-tooltip text="Clear Saved Content" location="bottom">
+          <template v-slot:activator="{ props }">
+            <v-btn v-bind="props" icon @click="clearSavedText">
+              <v-icon>mdi-delete</v-icon>
             </v-btn>
           </template>
         </v-tooltip>
@@ -411,5 +432,32 @@ const removeArrow = () => {
   indicateFrom.value = null;
   indicateTo.value = null;
   updateArrow();
+};
+
+// restore text from localStorage
+onMounted(() => {
+  const _text = localStorage.getItem("text");
+  if (_text) {
+    text.value = _text;
+    toggleView();
+    snackbars.value!.append("Saved content restored.");
+  }
+});
+const saveText = () => {
+  localStorage.setItem("text", text.value);
+  snackbars.value!.append("Saved.");
+};
+const loadSavedText = () => {
+  const _text = localStorage.getItem("text");
+  if (_text) {
+    text.value = _text;
+    snackbars.value!.append("Saved content restored.");
+  } else {
+    snackbars.value!.append("No saved content.");
+  }
+};
+const clearSavedText = () => {
+  localStorage.removeItem("text");
+  snackbars.value!.append("Saved content cleared.");
 };
 </script>
