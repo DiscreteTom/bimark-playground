@@ -130,6 +130,7 @@
         style="padding: 32px; border: 1px solid #c4c6ca; margin: 20px"
       ></div>
     </v-main>
+    <v-snackbars ref="snackbars" :timeout="5000" />
   </v-app>
 </template>
 
@@ -148,6 +149,7 @@ import rehypeStringify from "rehype-stringify";
 import rehypeSlug from "rehype-slug";
 import { useRoute, useRouter } from "vue-router";
 import * as d3 from "d3";
+import VSnackbars from "./components/VSnackbars.vue";
 
 // mode: edit | view
 const view = ref(false);
@@ -157,6 +159,7 @@ const rightDrawer = ref(true);
 const tocLinks = ref<{ title: string; to: string; lvl: number }[]>([]);
 const reverseLinks = ref<{ title: string; to: string; ref: Reference }[]>([]);
 const container = ref<HTMLElement | null>(null);
+const snackbars = ref<typeof VSnackbars | null>(null);
 const indicateFrom = ref<d3.Selection<
   HTMLElement,
   unknown,
