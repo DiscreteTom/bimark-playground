@@ -283,6 +283,17 @@ const render = async () => {
   );
   container.value!.innerHTML = html;
 
+  // make definitions links, #8
+  container.value?.querySelectorAll("span").forEach((el) => {
+    if (bm.id2def.has(el.id)) {
+      const parent = el.parentElement!;
+      const link = document.createElement("a");
+      link.href = "#" + el.id;
+      parent.replaceChild(link, el);
+      link.appendChild(el);
+    }
+  });
+
   // register router links to realize smooth scrolling
   container.value?.querySelectorAll("a").forEach((el) => {
     el.addEventListener("click", (e) => {
